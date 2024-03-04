@@ -7,11 +7,9 @@ import numpy as np
 from torch import optim
 from torch.optim import lr_scheduler 
 
-sys.path.append('C:/Users/MSH/OneDrive/')
-sys.path.append('C:/Users/MSH/OneDrive/projects/RL/')
-from JDRLcode.codes.models import MLPRF,MLPQR,MLPSQR
-from JDRLcode.codes.data import data_provider
-from JDRLcode.codes.loss_fun import QuantileLoss,QuantileLoss_omni,Omni_cost_loss,Likelyhood
+from .models import MLPRF,MLPQR,MLPSQR
+from .data import data_provider
+from .loss_fun import QuantileLoss,QuantileLoss_omni,Omni_cost_loss,Likelyhood
 from DEEPTS.utils.tools import EarlyStopping
 
 def adjust_learning_rate(optimizer, scheduler, epoch, args, printout=True):
@@ -43,6 +41,8 @@ def adjust_learning_rate(optimizer, scheduler, epoch, args, printout=True):
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr
         if printout: print('Updating learning rate to {}'.format(lr))
+
+
 
 class Exp_Main(object):
     def __init__(self, args):
