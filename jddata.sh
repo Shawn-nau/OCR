@@ -2,7 +2,7 @@
 model_name=MLPQR
 loss=Omni_cost_loss
 
-root_path_name=E:/Datasets/DF2013JD/Data/
+root_path_name=.exp/
 data_path_name=processed_df.csv
 
 random_seed=20240205
