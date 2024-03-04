@@ -2,10 +2,8 @@ import argparse
 import sys
 import pandas as pd
 import torch
-#from exp.exp_main import Exp_Main
-sys.path.append('C:/Users/MSH/OneDrive/projects/RL/')
-from JDRLcode.codes.experiment import Exp_Main,Exp_likelyhood,Exp_single
-from JDRLcode.codes.loss_fun import BiC_cost_detail
+from .experiment import Exp_Main,Exp_likelyhood,Exp_single
+from .loss_fun import BiC_cost_detail
 import random
 import numpy as np
 
@@ -21,12 +19,11 @@ if __name__ == '__main__':
     parser.add_argument('--model', type=str,  default='MLPRQ',
                         help='model name, options: [MLPRQ, MLPRF]')
 
-    # data loader
-    #parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
-    parser.add_argument('--root_path', type=str, default='E:/Datasets/DF2013JD/Data/', help='root path of the data file')
+    # data loader    
+    parser.add_argument('--root_path', type=str, default='./Data/', help='root path of the data file')
     parser.add_argument('--data_path', type=str, default='processed_df.csv', help='data file')
 
-    parser.add_argument('--checkpoints', type=str, default='E:/Datasets/DF2013JD/Data/Exps/', help='location of model checkpoints')  
+    parser.add_argument('--checkpoints', type=str, default='./Data/Exps/', help='location of model checkpoints')  
    
     # MLP
     parser.add_argument('--dim_embedding', type=int, default=3, help='input embedding')
