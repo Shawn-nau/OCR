@@ -1,2 +1,4 @@
 # OCR
 Optimizing Product Replenishment in Omni-Channel Grocery Retail Using Deep Learning
+
+The rise of omni-channel grocery retail presents fresh challenges in managing product replenishment efficiently. This study introduces a novel approach to address the unique dynamics of omni-channel replenishment by integrating front store (offline fulfillment) and backroom (online fulfillment) inventory management. We propose an end-to-end deep learning model designed to optimize SKU-level replenishment decisions for omni-channel retail stores, leveraging historical sales and promotional data. Real-world data validation and comparative analysis against benchmark approaches demonstrate the efficacy of the proposed method in achieving significant cost savings and enhancing operational efficiency for omni-channel retailers.
