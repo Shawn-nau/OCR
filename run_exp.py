@@ -72,14 +72,14 @@ if __name__ == '__main__':
     
     exp_settings = pd.concat([pd.Series(np.arange(1,6)/10,index = np.arange(5),name='cs'),
     pd.Series(np.arange(1,6)/10,index = np.arange(5,10),name='ch'),
-    pd.Series(np.arange(4,9)/10,index = np.arange(10,15),name='cm2k'),
-    pd.Series(np.arange(8,13)/10,index = np.arange(15,20),name='ck2m'),
+    pd.Series(np.arange(5,20,3)/10,index = np.arange(10,15),name='cm2k'),
+    pd.Series(np.arange(10,25,3)/10,index = np.arange(15,20),name='ck2m'),
     ],axis = 1)
 
     exp_settings['cs'] = exp_settings['cs'].fillna(0.3)
     exp_settings['ch'] = exp_settings['ch'].fillna(0.2)
-    exp_settings['cm2k'] = exp_settings['cm2k'].fillna(0.5)
-    exp_settings['ck2m'] = exp_settings['ck2m'].fillna(1)
+    exp_settings['cm2k'] = exp_settings['cm2k'].fillna(1.1)
+    exp_settings['ck2m'] = exp_settings['ck2m'].fillna(1.6)
     
     
     args.cs,args.ch,args.cm2k,args.ck2m = exp_settings.iloc[args.s,:] 
