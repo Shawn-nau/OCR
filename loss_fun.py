@@ -42,7 +42,7 @@ class Omni_cost_loss(nn.Module):
         cs = self.cs * p   # unit shortage cost
         ch = self.ch * p    # unit holding cost
         ck2m = self.ck2m    # unit transfer cost, from k to m
-        cm2k = self.cm2k 
+        cm2k = self.cm2k + 0.15*p
         
         
         lack_m = torch.max(y_m - x_m, torch.zeros_like(y_m))
@@ -109,7 +109,7 @@ class BiC_cost_detail():
         cs = self.cs * p   ## unit shortage cost
         ch = self.ch * p    ## unit holding cost
         ck2m = self.ck2m    ## unit transfer cost, from k to m
-        cm2k = self.cm2k     ## unit transfer cost, from k to m, dependce on the batch
+        cm2k = self.cm2k + 0.15*p    ## unit transfer cost, from k to m, dependce on the batch
         cm = self.cm
         
         #if (x_m <= 5) & (x_m > 0):  
