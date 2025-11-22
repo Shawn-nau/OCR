@@ -119,14 +119,13 @@ if __name__ == '__main__':
 
         exp = Exp(args)  # set experiments
         print('>>>>>>>start training : {}>>>>>>>>>>>>>>>>>>>>>>>>>>'.format(setting))
-        #exp.train(setting)
+        exp.train(setting)
 
-        print('>>>>>>>testing : {}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'.format(setting))
-        #exp.predict(setting,True)
-        #exp.optimize(setting,model_setting,True)
-        exp.optimize_quantile(setting,model_setting,True)
-        #exp.evaluate(setting,metrics)
+        print('>>>>>>>testing : {}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'.format(setting))        
+        exp.optimize(setting,model_setting,True)
+        #exp.optimize_quantile(setting,model_setting,True)        
         torch.cuda.empty_cache()
 
 
     
+
