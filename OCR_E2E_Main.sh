@@ -2,9 +2,9 @@
 model_name=MLPQR
 loss=Omni_cost_loss
 
-root_path_name=E:/Datasets/DF2013JD/Data/
+root_path_name./Data/
 data_path_name=processed_df.csv
-save_path_name=E:/Datasets/DF2013JD/Data/Exp_251027/
+save_path_name=./Exp_1/
 random_seed=20241002
 
 for set in 0 1 2 3 4 5 6 7 8 9 
@@ -24,5 +24,6 @@ python -u run_exp.py \
     --s $set\
     --itr 1 --batch_size 5120 --learning_rate 0.001
 done 
+
 
 
