@@ -3,7 +3,7 @@ model_name=MLPRF
 loss=JointLikelyhood
 
 
-root_path_name=E:/Datasets/DF2013JD/Data/
+root_path_name=./Data/
 data_path_name=processed_df.csv
 
 random_seed=20250421
@@ -25,5 +25,6 @@ python -u run_exp_jointlike.py \
     --s $set\
     --itr 1 --batch_size 96930 --learning_rate 0.001
 done 
+
 
 
