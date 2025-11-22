@@ -8,12 +8,10 @@ import numpy as np
 from torch import optim
 from torch.optim import lr_scheduler 
 
-sys.path.append('C:/Users/MSH/OneDrive/')
-sys.path.append('C:/Users/MSH/OneDrive/projects/RL/')
-from JDRLcode.Codes_IJPR_R1.models import MLPRF,MLPQR,MLPSQR,MLPJoint
-from JDRLcode.Codes_IJPR_R1.data import data_provider
-from JDRLcode.Codes_IJPR_R1.loss_fun import QuantileLoss,QuantileLoss_omni,Omni_cost_loss,Likelyhood,JointLikelyhood,JointLikelyhood_Clayton,JointLikelyhood_Gumbel,MseLoss_omni
-from DEEPTS.utils.tools import EarlyStopping
+from models import MLPRF,MLPQR,MLPSQR,MLPJoint
+from data import data_provider
+from loss_fun import QuantileLoss,QuantileLoss_omni,Omni_cost_loss,Likelyhood,JointLikelyhood,JointLikelyhood_Clayton,JointLikelyhood_Gumbel,MseLoss_omni
+from tools import EarlyStopping
 
 import scipy.stats  # Import SciPy stats
 import torch.distributions as dist
@@ -1371,5 +1369,6 @@ class Exp_single(Exp_Main):
             np.save(folder_path  + 'test_pred.npy', predictions)
             np.save(folder_path  + 'test_true.npy', true_labels)
         return
+
 
 
