@@ -14,12 +14,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Omni retail replenishment')
 
     # random seed
-    parser.add_argument('--random_seed', type=int, default=2025, help='random seed')
+    parser.add_argument('--random_seed', type=int, default=2024, help='random seed')
 
     # basic config
     parser.add_argument('--is_training', type=int, default=1, help='status')
-    parser.add_argument('--model', type=str,  default='MLPQR',
-                        help='model name, options: [MLPQR, MLPRF]')
+    parser.add_argument('--model', type=str,  default='MLPRQ',
+                        help='model name, options: [MLPRQ, MLPRF]')
 
     # data loader
     #parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
@@ -49,11 +49,6 @@ if __name__ == '__main__':
 
     parser.add_argument('--nsample', type=int, default=200, help='samples in distribution')
     
-    
-    # panalty
-    parser.add_argument('--shelf_penalty', type=bool, default=False, help='shelf_penalty')
-    parser.add_argument('--lambda_int', type=float, default=1, help='lambda_int')
-    parser.add_argument('--lambda_shelf', type=float, default=1, help='lambda_shelf')
 
     # GPU
     parser.add_argument('--use_gpu', type=bool, default=True, help='use gpu')
@@ -91,10 +86,10 @@ if __name__ == '__main__':
     
     
     args.cs,args.ch,args.cm2k,args.ck2m = exp_settings.iloc[args.s,:] 
-    
+    cs,ch,cm2k,ck2m = exp_settings.iloc[2,:] 
     metrics = BiC_cost_detail(args)
     
-    Exp = Exp_Main
+    Exp = Exp_likelyhood
     
     for ii in range(args.itr):
         # setting record of experiments
@@ -109,14 +104,27 @@ if __name__ == '__main__':
             args.hidden_size1,
             args.learning_rate,                
             ii)
+        
+        model_setting = '{}_{}_cs{}_ch{}_cm2k{}_ck2m{}_embedding{}_h1{}_lr{}_itr{}'.format(
+            args.model,
+            args.loss,
+            cs,
+            ch,
+            cm2k,
+            ck2m,
+            args.dim_embedding,
+            args.hidden_size1,
+            args.learning_rate,                
+            ii)
 
         exp = Exp(args)  # set experiments
         print('>>>>>>>start training : {}>>>>>>>>>>>>>>>>>>>>>>>>>>'.format(setting))
-        exp.train(setting)
+        #exp.train(setting)
 
         print('>>>>>>>testing : {}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'.format(setting))
-        exp.predict(setting,True)
-        exp.evaluate(setting,metrics)
+        #exp.predict(setting,True)
+        exp.optimize(setting,model_setting,True)
+        #exp.optimize_quantile(setting,metrics)
         torch.cuda.empty_cache()
 
     

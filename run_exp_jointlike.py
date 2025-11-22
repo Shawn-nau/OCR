@@ -4,7 +4,7 @@ import pandas as pd
 import torch
 #from exp.exp_main import Exp_Main
 sys.path.append('C:/Users/MSH/OneDrive/projects/RL/')
-from JDRLcode.Codes_IJPR_R1.experiment import Exp_Main,Exp_likelyhood,Exp_single
+from JDRLcode.Codes_IJPR_R1.experiment import Exp_Main,Exp_likelyhood,Exp_Jointlikelyhood
 from JDRLcode.Codes_IJPR_R1.loss_fun import BiC_cost_detail
 import random
 import numpy as np
@@ -14,19 +14,19 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Omni retail replenishment')
 
     # random seed
-    parser.add_argument('--random_seed', type=int, default=2025, help='random seed')
+    parser.add_argument('--random_seed', type=int, default=2024, help='random seed')
 
     # basic config
     parser.add_argument('--is_training', type=int, default=1, help='status')
-    parser.add_argument('--model', type=str,  default='MLPQR',
-                        help='model name, options: [MLPQR, MLPRF]')
+    parser.add_argument('--model', type=str,  default='MLPRQ',
+                        help='model name, options: [MLPRQ, MLPRF]')
 
     # data loader
     #parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
     parser.add_argument('--root_path', type=str, default='E:/Datasets/DF2013JD/Data/', help='root path of the data file')
     parser.add_argument('--data_path', type=str, default='processed_df.csv', help='data file')
 
-    parser.add_argument('--checkpoints', type=str, default='E:/Datasets/DF2013JD/Data/Exp_251027/', help='location of model checkpoints')  
+    parser.add_argument('--checkpoints', type=str, default='E:/Datasets/DF2013JD/Data/Exp_251027', help='location of model checkpoints')  
    
     # MLP
     parser.add_argument('--dim_embedding', type=int, default=3, help='input embedding')
@@ -49,11 +49,6 @@ if __name__ == '__main__':
 
     parser.add_argument('--nsample', type=int, default=200, help='samples in distribution')
     
-    
-    # panalty
-    parser.add_argument('--shelf_penalty', type=bool, default=False, help='shelf_penalty')
-    parser.add_argument('--lambda_int', type=float, default=1, help='lambda_int')
-    parser.add_argument('--lambda_shelf', type=float, default=1, help='lambda_shelf')
 
     # GPU
     parser.add_argument('--use_gpu', type=bool, default=True, help='use gpu')
@@ -91,10 +86,10 @@ if __name__ == '__main__':
     
     
     args.cs,args.ch,args.cm2k,args.ck2m = exp_settings.iloc[args.s,:] 
-    
+    cs,ch,cm2k,ck2m = exp_settings.iloc[2,:] 
     metrics = BiC_cost_detail(args)
     
-    Exp = Exp_Main
+    Exp = Exp_Jointlikelyhood
     
     for ii in range(args.itr):
         # setting record of experiments
@@ -109,14 +104,28 @@ if __name__ == '__main__':
             args.hidden_size1,
             args.learning_rate,                
             ii)
+        
+        model_setting = '{}_{}_cs{}_ch{}_cm2k{}_ck2m{}_embedding{}_h1{}_lr{}_itr{}'.format(
+            args.model,
+            args.loss,
+            cs,
+            ch,
+            cm2k,
+            ck2m,
+            args.dim_embedding,
+            args.hidden_size1,
+            args.learning_rate,                
+            ii)
 
         exp = Exp(args)  # set experiments
         print('>>>>>>>start training : {}>>>>>>>>>>>>>>>>>>>>>>>>>>'.format(setting))
-        exp.train(setting)
+        #exp.train(setting)
 
         print('>>>>>>>testing : {}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'.format(setting))
-        exp.predict(setting,True)
-        exp.evaluate(setting,metrics)
+        #exp.predict(setting,True)
+        #exp.optimize(setting,model_setting,True)
+        exp.optimize_quantile(setting,model_setting,True)
+        #exp.evaluate(setting,metrics)
         torch.cuda.empty_cache()
 
     

@@ -39,7 +39,7 @@ class Dataset_Omni_mlp(Dataset):
         self.cat_var = ['store_id', 'sku_id',  'weather_type', 'item_first_cate_cd', 'item_second_cate_cd',
             'item_third_cate_cd', 'brand_code', 'tm_w', 'tm_m', 'tm_dw']
         
-        self.y_label = ['y_k','y_m','original_price','ratio']
+        self.y_label = ['y_k','y_m','original_price','ratio','y_k_c']
         type_map = {'train': self.tr_mask, 'val': self.vl_mask, 'test': self.ts_mask}
         mask = type_map[flag]
         
@@ -52,23 +52,23 @@ class Dataset_Omni_mlp(Dataset):
         df = pd.read_csv(self.root_path + self.data_path,parse_dates=['date'])
         df = df.loc[df['store_id']<=5]
         
-        validation = {
-            'validation' :  pd.to_datetime(['2023-07-15', '2023-07-31']),
-            'test' :  pd.to_datetime(['2023-08-01', '2023-08-31']),
+        dataset = {
+            'validation' :  pd.to_datetime(['2023-03-01', '2023-04-30']), #pd.to_datetime(['2023-07-01', '2023-07-31']),
+            'test' :  pd.to_datetime(['2023-05-01', '2023-06-30']), # pd.to_datetime(['2023-08-01', '2023-08-31']),
         }
-        cv = 'validation'
-        
+               
         
         df['price'] = df['original_price']
         df['discount'] = (df['discount_off_y'] + df['discount_off_x'])/2
         
-        self.tr_mask = df['date'] < validation[cv][0]
-        self.vl_mask = (df['date'] >= validation[cv][0]) & (df['date'] <= validation[cv][1])
-        self.ts_mask = (df['date'] > validation[cv][1]) 
+        self.tr_mask = df['date'] < dataset['validation'][0]
+        self.vl_mask = (df['date'] >= dataset['validation'][0]) & (df['date'] <= dataset['validation'][1])
+        self.ts_mask = (df['date'] > dataset['test'][0]) & (df['date'] <= dataset['test'][1]) 
         
         df['y_k'] = np.round(df['y_k'])
         df['y_m'] = np.round(df['y_m'])
         df['ratio'] = df['y_k_rolling_mean_1_28']/(df['y_k_rolling_mean_1_28']+df['y_m_rolling_mean_1_28']+1e-9)
+        df['y_k_c'] = df.groupby(['store_id','sku_id'])['y_k'].transform(np.quantile,0.8)
         
         num_var = ['price','y_k_rolling_mean_1_3', 'y_k_rolling_mean_1_7',
        'y_k_rolling_mean_1_14', 'y_k_rolling_mean_1_28',
