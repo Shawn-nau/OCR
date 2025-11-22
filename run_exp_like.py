@@ -2,10 +2,9 @@ import argparse
 import sys
 import pandas as pd
 import torch
-#from exp.exp_main import Exp_Main
-sys.path.append('C:/Users/MSH/OneDrive/projects/RL/')
-from JDRLcode.Codes_IJPR_R1.experiment import Exp_Main,Exp_likelyhood,Exp_single
-from JDRLcode.Codes_IJPR_R1.loss_fun import BiC_cost_detail
+
+from experiment import Exp_Main,Exp_likelyhood,Exp_single
+from loss_fun import BiC_cost_detail
 import random
 import numpy as np
 
@@ -23,10 +22,10 @@ if __name__ == '__main__':
 
     # data loader
     #parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
-    parser.add_argument('--root_path', type=str, default='E:/Datasets/DF2013JD/Data/', help='root path of the data file')
+    parser.add_argument('--root_path', type=str, default='./Data/', help='root path of the data file')
     parser.add_argument('--data_path', type=str, default='processed_df.csv', help='data file')
 
-    parser.add_argument('--checkpoints', type=str, default='E:/Datasets/DF2013JD/Data/Exp_251027/', help='location of model checkpoints')  
+    parser.add_argument('--checkpoints', type=str, default='./Exp_1/', help='location of model checkpoints')  
    
     # MLP
     parser.add_argument('--dim_embedding', type=int, default=3, help='input embedding')
@@ -119,12 +118,12 @@ if __name__ == '__main__':
 
         exp = Exp(args)  # set experiments
         print('>>>>>>>start training : {}>>>>>>>>>>>>>>>>>>>>>>>>>>'.format(setting))
-        #exp.train(setting)
+        exp.train(setting)
 
         print('>>>>>>>testing : {}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'.format(setting))
-        #exp.predict(setting,True)
         exp.optimize(setting,model_setting,True)
         #exp.optimize_quantile(setting,metrics)
         torch.cuda.empty_cache()
+
 
     
